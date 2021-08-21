@@ -1,9 +1,23 @@
 import './styles.scss';
+import { useHistory } from 'react-router-dom';
 import illustrationImg from '../../assets/illustration.svg';
 import googleIconImg from '../../assets/google-icon.svg'
 import { Button } from '../../components/Button';
+import { useAuth } from '../../hooks/useAuth';
+import { FormEvent, useState } from 'react';
 
-const Login = () => {
+const Home = () => {
+
+    const history = useHistory();
+    const {user, signInWithGoogle } = useAuth();
+
+    const handleSignIn =  async () => {
+        if (!user) {
+            await signInWithGoogle()
+        }
+        history.push('/chats');
+    }
+ 
     return (
         <div id = "page-auth">
             <aside>
@@ -22,7 +36,7 @@ const Login = () => {
                         <img src="https://img.icons8.com/color/48/000000/fire-element--v1.png" />
                         <h1> FireChat </h1>
                     </div>
-                <button  className='login-google'>
+                <button onClick = {handleSignIn} className='login-google'>
                     <img src={googleIconImg} alt="Logo do Google" />
                     Entrar com o Google
                 </button>
@@ -45,4 +59,4 @@ const Login = () => {
     )
 }
 
-export default Login;
+export default Home;
